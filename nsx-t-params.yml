@@ -246,14 +246,14 @@ nsx_t_t1router_logical_switches_spec: |
   t1_routers:
   # Add additional T1 Routers or collapse switches into same T1 Router as needed
   # Comment off the following T1 Routers if there is no PKS
-  - name: T1-Router-PKS-Infra
+  - name: t1-pks-mgmt
     switches:
-    - name: PKS-Infra
+    - name: ls-pks-mgmt
       logical_switch_gw: 172.31.0.1 # Last octet should be 1 rather than 0
       subnet_mask: 24
-  - name: T1Router-PKS-Clusters
+  - name: t1-pks-service
     switches:
-    - name: PKS-k8s-Clusters
+    - name: ls-pks-service
       logical_switch_gw: 172.31.1.1 # Last octet should be 1 rather than 0
       subnet_mask: 24
 
@@ -270,10 +270,8 @@ nsx_t_ha_switching_profile_spec: |
 # Add additional container ip blocks as needed
 nsx_t_container_ip_block_spec: |
   container_ip_blocks:
-  - name: container-ip-block
+  - name: ip-block-pks-deployments
     cidr: 172.16.0.0/16
-
-
 
 
 # Make sure the ncp/cluster tag matches the one defined on the T0 Router for PAS
@@ -290,84 +288,37 @@ nsx_t_external_ip_pool_spec: |
 
 
 # Specify NAT rules
-# Provide matching dnat and snat rule for specific vms by using ips for destination_net                                                                                          work and translated_network that need to be exposed like Ops Mgr
-# Provide snat rules for outbound from either container or a vm by specifying the sourc                                                                                          e_network (cidr) and translated network ip
-nsx_t_nat_rules_spec:
-#nsx_t_nat_rules_spec: |
-#  nat_rules:
-  # Sample entry for allowing inbound to PAS Ops manager
-#  - t0_router: DefaultT0Router
-#    nat_type: dnat
-#    destination_network: 10.208.40.2   # External IP address for PAS opsmanager
-#    translated_network: 192.168.10.2     # Internal IP of PAS Ops manager
-#    rule_priority: 1024                  # Higher priority
-  # Sample entry for allowing outbound from PAS Ops Mgr to external
-#  - t0_router: DefaultT0Router
-#    nat_type: snat
-#    source_network: 192.168.10.2         # Internal IP of PAS opsmanager
-#    translated_network: 10.208.40.2      # External IP address for PAS opsmanager
-#    rule_priority: 1024                  # Higher priority
-  # Sample entry for PAS Infra network SNAT
-#  - t0_router: DefaultT0Router
-#    nat_type: snat
-#    source_network: 192.168.10.0/24      # PAS Infra network cidr
-#    translated_network: 10.208.40.3      # SNAT External Address for PAS networks
-#    rule_priority: 8000                  # Lower priority
-
-  # Sample entry for PAS ERT network SNAT
-#  - t0_router: DefaultT0Router
-#    nat_type: snat
-#    source_network: 192.168.24.0/24      # PAS ERT network cidr
-#    translated_network: 10.208.40.3      # SNAT External Address for PAS networks
-#    rule_priority: 8000                  # Lower priority
-
-  # Sample entry for PAS Services network SNAT
-#  - t0_router: DefaultT0Router
-#    nat_type: snat
-#    source_network: 192.168.28.0/24      # PAS Services network cidr
-#    translated_network: 10.208.40.3      # SNAT External Address for PAS networks
-#    rule_priority: 8001                  # Lower priority
-
-  # Sample entry for PAS Dynamic Services network SNAT
-#  - t0_router: DefaultT0Router
-#    nat_type: snat
-#    source_network: 192.168.30.0/24      # PAS Dynamic Services network cidr
-#    translated_network: 10.208.40.3      # SNAT External Address for PAS networks
-#    rule_priority: 8001                  # Lower priority
-
-  # Sample entry for PKS PKS-clusters network
-#  - t0_router: DefaultT0Router
-#    nat_type: snat
-#    source_network: 192.168.40.0/24      # PKS Clusters network cidr
-#    translated_network: 10.208.50.3      # SNAT External Address for PKS networks
-#    rule_priority: 8001                  # Lower priority
-
-  # Sample entry for PKS PKS-Infra network
-#  - t0_router: DefaultT0Router
-#    nat_type: snat
-#    source_network: 192.168.20.0/24      # PKS Infra network cidr
-#    translated_network: 10.208.50.3      # SNAT External Address for PKS networks
-#    rule_priority: 8001                  # Lower priority
+# Provide matching dnat and snat rule for specific vms by using ips for destination_net work and translated_network that need to be exposed like Ops Mgr
+# Provide snat rules for outbound from either container or a vm by specifying the source_network (cidr) and translated network ip
+nsx_t_nat_rules_spec: |
+  nat_rules:
+  # Sample entry for PKS MGMT and Service networks
+  - t0_router: t0-pks
+    nat_type: snat
+    source_network: 172.31.0.0/23      # PKS Clusters network cidr
+    translated_network: 192.168.76.1      # SNAT External Address for PKS networks
+    rule_priority: 1024                  # Higher priority
 
   # Sample entry for allowing inbound to PKS Ops manager
-#  - t0_router: DefaultT0Router
-#    nat_type: dnat
-#    destination_network: 10.208.50.2     # External IP address for PKS opsmanager
-#    translated_network: 192.168.20.2     # Internal IP of PKS Ops manager
-#    rule_priority: 1024                  # Higher priority
-  # Sample entry for allowing outbound from PKS Ops Mgr to external
-#  - t0_router: DefaultT0Router
-#    nat_type: snat
-#    source_network: 192.168.20.2        # Internal IP of PAS opsmanager
-#    translated_network: 10.208.50.2      # External IP address for PAS opsmanager
-#    rule_priority: 1024                  # Higher priority
-
+  - t0_router: t0-pks
+    nat_type: dnat
+    destination_network: 192.168.76.2     # External IP address for PKS opsmanager
+    translated_network: 172.31.0.2     # Internal IP of PKS Ops manager
+    rule_priority: 1024                  # Higher priority
+  
+  # Sample entry for allowing inbound to BOSH
+  - t0_router: t0-pks
+    nat_type: dnat
+    destination_network: 192.168.76.3     # External IP address for PKS opsmanager
+    translated_network: 172.31.0.3     # Internal IP of PKS Ops manager
+    rule_priority: 1024                  # Higher priority
+    
   # Sample entry for allowing inbound to PKS Controller
-#  - t0_router: DefaultT0Router
-#    nat_type: dnat
-#    destination_network: 10.208.50.4     # External IP address for PKS opsmanager
-#    translated_network: 192.168.20.4     # Internal IP of PKS Ops Controller
-#    rule_priority: 1024                  # Higher priority
+  - t0_router: t0-pks
+    nat_type: dnat
+    destination_network: 192.168.76.4    # External IP address for PKS opsmanager
+    translated_network: 172.31.0.4     # Internal IP of PKS Ops Controller
+    rule_priority: 1024                  # Higher priority
   # Sample entry for allowing outbound from PKS Controller to external
 #  - t0_router: DefaultT0Router
 #    nat_type: snat
@@ -408,4 +359,30 @@ nsx_t_csr_request_spec: |
 # large     |    4     |   1       | 1 # Recommended for running PAS + PKS
 # Bare metal - not handled here
 nsx_t_lbr_spec:
-
+#nsx_t_lbr_spec: |
+#  loadbalancers:
+  # Sample entry for creating LBR for PAS ERT
+#  - name: PAS-ERT-LBR
+#    t1_router: T1-Router-PAS-ERT # Should match a previously declared T1 Router
+#    size: small                  # Allowed sizes: small, medium, large
+#    virtual_servers:
+#    - name: goRouter443         # Name that signifies function being exposed
+#      vip: 10.208.40.4         # Exposed VIP for LBR to listen on
+#      port: 443
+#      members:
+#      - ip: 192.168.24.11       # Internal ip of GoRouter instance 1
+#        port: 443
+#    - name: goRouter80
+#      vip: 10.208.40.4
+#      port: 80
+#      members:
+#      - ip: 192.168.24.31       # Internal ip of GoRouter instance 1
+#        port: 80
+#      - ip: 192.168.24.32       # Internal ip of GoRouter instance 2
+#        port: 80
+#    - name: sshProxy            # SSH Proxy exposed to outside
+#      vip: 10.208.40.5
+#      port: 2222                # Port 2222 for ssh proxy
+#      members:
+#      - ip: 192.168.24.41       # Internal ip of Diego Brain where ssh proxy runs
+#        port: 2222
