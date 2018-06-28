@@ -24,7 +24,7 @@ netmask: 255.255.255.0                    # EDIT
 # https://my.vmware.com/group/vmware/details?downloadGroup=NSX-T-210&productId=673
 # Host a Webserver to serve the ova images and ovftool
 # Please edit the endpoint and the file names
-nsx_image_webserver: http://fly.vballin.com
+nsx_image_webserver: http://172.18.0.2
 nsx_mgr_ova: nsx-unified-appliance-2.1.0.0.0.7395503.ova
 nsx_controller_ova: nsx-controller-2.1.0.0.0.7395493.ova
 nsx_edge_ova: nsx-edge-2.1.0.0.0.7395502.ova
@@ -56,7 +56,7 @@ compute_vcenter_configs: |
     vcenter_pwd: VMware1!
     vcenter_cluster: vlab-cna
     overlay_profile_mtu: 1600 # Min 1600
-    overlay_profile_vlan: 0 # VLAN ID for the TEP/Overlay network
+    overlay_profile_vlan: 70 # VLAN ID for the TEP/Overlay network
     # Specify an unused vmnic on esxi host to be used for nsx-t
     # can be multiple vmnics separated by comma
     esxi_vmnics: vmnic1 # vmnic1,vmnic2...
@@ -67,7 +67,7 @@ compute_vcenter_configs: |
     vcenter_pwd: VMware1!
     vcenter_cluster: vlab-mgmt
     overlay_profile_mtu: 1600 # Min 1600
-    overlay_profile_vlan: 0 # VLAN ID for the TEP/Overlay network
+    overlay_profile_vlan: 70 # VLAN ID for the TEP/Overlay network
     # Specify an unused vmnic on esxi host to be used for nsx-t
     # can be multiple vmnics separated by comma
     esxi_vmnics: vmnic1 # vmnic1,vmnic2...
@@ -254,8 +254,8 @@ nsx_t_t1router_logical_switches_spec: |
   - name: t1-pks-service
     switches:
     - name: ls-pks-service
-      logical_switch_gw: 172.31.1.1 # Last octet should be 1 rather than 0
-      subnet_mask: 24
+      logical_switch_gw: 172.31.2.1 # Last octet should be 1 rather than 0
+      subnet_mask: 23
 
 # Make sure the ncp/cluster tag matches the one defined on the T0 Router
 # Additional the ncp/ha tag should be set for HA Spoof guard profile
@@ -270,11 +270,15 @@ nsx_t_ha_switching_profile_spec: |
 # Add additional container ip blocks as needed
 nsx_t_container_ip_block_spec: |
   container_ip_blocks:
-  - name: ip-block-pks-deployments
+  - name: ip-block-pods-deployments
     cidr: 172.16.0.0/16
+    tags:
+      ncp/shared_resource: 'true' # required for PKS
+  - name: ip-block-nodes-deployments
+    cidr: 172.31.25.0/16
+    tags:
+      ncp/shared_resource: 'true' # required for PKS
 
-
-# Make sure the ncp/cluster tag matches the one defined on the T0 Router for PAS
 # Make sure the ncp/shared tag is set to true for PKS
 # Additional the ncp/external tag should be set for external facing ip pool
 # Add additional exernal ip pools as needed
