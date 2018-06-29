@@ -275,7 +275,7 @@ nsx_t_container_ip_block_spec: |
     tags:
       ncp/shared_resource: 'true' # required for PKS
   - name: ip-block-nodes-deployments
-    cidr: 172.31.25.0/16
+    cidr: 172.25.0.0/16
     tags:
       ncp/shared_resource: 'true' # required for PKS
 
