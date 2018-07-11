@@ -4,21 +4,21 @@ nsx_t_installer: nsx-t-gen  # Set to name of installer or env or any value so re
 # vCenter details to deploy the Mgmt OVAs (Mgr, Edge, Controller)
 vcenter_host: vlab-vcsa.vballin.com       # EDIT - this is for deployment of the ovas for the                                                                                           mgmt plane
 vcenter_usr: administrator@vsphere.local  # EDIT - this is for deployment of the ovas for                                                                                           the mgmt plane
-vcenter_pwd: VMware1!               # EDIT - this is for deployment of the ovas for the                                                                                           mgmt plane
-vcenter_datacenter: vlab-dc            # EDIT
-vcenter_datastore: vlab-nfs-ds-ssd              # EDIT
-vcenter_cluster: vlab-mgmt                  # EDIT
-vcenter_manager: vlab-vcsa.vballin.com                # EDIT
+vcenter_pwd: VMware1!                     # EDIT - this is for deployment of the ovas for the                                                                                           mgmt plane
+vcenter_datacenter: vlab-dc               # EDIT
+vcenter_datastore: vlab-nfs-ds-ssd        # EDIT
+vcenter_cluster: vlab-mgmt                # EDIT
+vcenter_manager: vlab-vcsa.vballin.com    # EDIT
 vcenter_rp:                               #EDIT resource pool where mgmt VMs would be deployed
 
 
 # OVA general network settings
-ntpservers: us.pool.ntp.org                    # EDIT
+ntpservers: us.pool.ntp.org              # EDIT
 mgmt_portgroup: 'vlab-mgmt'              # EDIT
-dnsserver: 192.168.64.60                     # EDIT
-dnsdomain: vballin.com                  # EDIT
-defaultgateway: 192.168.64.1                # EDIT
-netmask: 255.255.255.0                    # EDIT
+dnsserver: 192.168.64.60                 # EDIT
+dnsdomain: vballin.com                   # EDIT
+defaultgateway: 192.168.64.1             # EDIT
+netmask: 255.255.255.0                   # EDIT
 
 # Download NSX-T 2.1 bits from
 # https://my.vmware.com/group/vmware/details?downloadGroup=NSX-T-210&productId=673
@@ -299,41 +299,42 @@ nsx_t_nat_rules_spec: |
   # Sample entry for PKS MGMT and Service networks
   - t0_router: t0-pks
     nat_type: snat
-    source_network: 172.31.0.0/23      # PKS Clusters network cidr
+    source_network: 172.31.0.0/24         # PKS Clusters network cidr
     translated_network: 192.168.76.1      # SNAT External Address for PKS networks
-    rule_priority: 1024                  # Higher priority
+    rule_priority: 1024                   # Higher priority
 
   # Sample entry for allowing inbound to PKS Ops manager
   - t0_router: t0-pks
     nat_type: dnat
     destination_network: 192.168.76.2     # External IP address for PKS opsmanager
-    translated_network: 172.31.0.2     # Internal IP of PKS Ops manager
-    rule_priority: 1024                  # Higher priority
+    translated_network: 172.31.0.2        # Internal IP of PKS Ops manager
+    rule_priority: 1024                   # Higher priority
   
   # Sample entry for allowing inbound to BOSH
   - t0_router: t0-pks
     nat_type: dnat
     destination_network: 192.168.76.3     # External IP address for PKS opsmanager
-    translated_network: 172.31.0.3     # Internal IP of PKS Ops manager
-    rule_priority: 1024                  # Higher priority
+    translated_network: 172.31.0.3        # Internal IP of PKS Ops manager
+    rule_priority: 1024                   # Higher priority
     
   # Sample entry for allowing inbound to PKS Controller
   - t0_router: t0-pks
     nat_type: dnat
     destination_network: 192.168.76.4    # External IP address for PKS Controller
-    translated_network: 172.31.0.4     # Internal IP of PKS Ops Controller
+    translated_network: 172.31.0.4       # Internal IP of PKS Ops Controller
     rule_priority: 1024                  # Higher priority
     
   # Sample entry for allowing inbound to Harbor
   - t0_router: t0-pks
     nat_type: dnat
     destination_network: 192.168.76.5    # External IP address for Harbor
-    translated_network: 172.31.0.5     # Internal IP of Harbor
+    translated_network: 172.31.0.5       # Internal IP of Harbor
     rule_priority: 1024                  # Higher priority
-  # Sample entry for allowing outbound from PKS Controller to external
+
+#  # Sample entry for allowing outbound from PKS Controller to external
 #  - t0_router: DefaultT0Router
 #    nat_type: snat
-#    source_network: 192.168.20.4        # Internal IP of PKS controller
+#    source_network: 192.168.20.4         # Internal IP of PKS controller
 #    translated_network: 10.208.50.4      # External IP address for PKS controller
 #    rule_priority: 1024                  # Higher priority
 
@@ -341,11 +342,11 @@ nsx_t_nat_rules_spec: |
 nsx_t_csr_request_spec: |
   csr_request:
     #common_name not required - would use nsx_t_manager_host_name
-    org_name: VMware            # EDIT
-    org_unit: vlab          # EDIT
+    org_name: VMware             # EDIT
+    org_unit: vlab               # EDIT
     country: US                  # EDIT
     state: CO                    # EDIT
-    city: Springs                     # EDIT
+    city: Springs                # EDIT
     key_size: 2048               # Valid values: 2048 or 3072
     algorithm: RSA               # Valid values: RSA or DSA
 
