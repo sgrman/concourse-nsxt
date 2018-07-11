@@ -69,30 +69,24 @@ compute_manager_configs: |
       # can be multiple vmnics separated by comma
       uplink_vmnics: vmnic1         # vmnic1,vmnic2...
 
-compute_vcenter_cluster:
-compute_vcenter_host:
-compute_vcenter_manager:
-compute_vcenter_pwd:
-compute_vcenter_usr:
-
 # Use following section to allow different clusters and resource pool per controller
 nsx_t_controllers_config: 
   
 # Using a separate vCenter to add Edges
 # Edge Specific vCenter settings
 # If Edges are going to use the same vCenter as Mgr, then dont set any of the following properties
-edge_vcenter_host: vlab-vcsa.vballin.com #    EDIT - If filled, then Edges would use this separate vcenter
-edge_vcenter_usr: administrator@vsphere.local #     EDIT -  Use Edge specific vCenter
-edge_vcenter_pwd: VMware1!  #     EDIT -  Use Edge specific vCenter
-edge_vcenter_datacenter: vlab-dc #     EDIT -  Use Edge specific vCenter
-edge_vcenter_datastore:  vlab-nfs-ds-ssd #     EDIT -  Use Edge specific vCenter
-edge_vcenter_cluster: vlab-mgmt #     EDIT -  Use Edge specific vCenter
-edge_ntpservers: us.pool.ntp.org #     EDIT -  Use Edge specific vCenter
-edge_mgmt_portgroup: 'vlab-mgmt' #     EDIT -  Use Edge specific vCenter
-edge_dnsserver: 192.168.64.60 #     EDIT -  Use Edge specific vCenter
-edge_dnsdomain: vballin.com #     EDIT -  Use Edge specific vCenter
-edge_defaultgateway: 192.168.64.1 #     EDIT -  Use Edge specific vCenter
-edge_netmask: 255.255.255.0 #     EDIT -  Use Edge specific vCenter
+edge_vcenter_host:           #    EDIT - If filled, then Edges would use this separate vcenter
+edge_vcenter_usr:            #     EDIT -  Use Edge specific vCenter
+edge_vcenter_pwd:            #     EDIT -  Use Edge specific vCenter
+edge_vcenter_datacenter:     #     EDIT -  Use Edge specific vCenter
+edge_vcenter_datastore:      #     EDIT -  Use Edge specific vCenter
+edge_vcenter_cluster:        #     EDIT -  Use Edge specific vCenter
+edge_ntpservers:             #     EDIT -  Use Edge specific vCenter
+edge_mgmt_portgroup:         #     EDIT -  Use Edge specific vCenter
+edge_dnsserver:              #     EDIT -  Use Edge specific vCenter
+edge_dnsdomain:              #     EDIT -  Use Edge specific vCenter
+edge_defaultgateway:         #     EDIT -  Use Edge specific vCenter
+edge_netmask:                #     EDIT -  Use Edge specific vCenter
 
 
 # Edit fololowing parameters
@@ -100,19 +94,23 @@ nsx_t_manager_host_name: vlab-nsxmgr.vballin.com # Set as FQDN, will be used als
 nsx_t_manager_vm_name: 'vlab-nsxmgr'               # Can have spaces
 nsx_t_manager_ip: 192.168.64.20
 nsx_t_manager_admin_user: admin
-nsx_t_manager_admin_pwd: VMware1!         # Min 8 chars, upper, lower, number, special                                                                                           digit
-nsx_t_manager_root_pwd: VMware1!          # Min 8 chars, upper, lower, number, special                                                                                           digit
-nsx_t_controller_host_prefix: nsx-t-ctl   # Without spaces, Generated controller would                                                                                           be nsx-t-ctrl-1.corp.local.io,...
+nsx_t_manager_admin_pwd: VMware1!                # Min 8 chars, upper, lower, number, special                                                                                           digit
+nsx_t_manager_root_pwd: VMware1!                 # Min 8 chars, upper, lower, number, special                                                                                           digit
+
+# Following properties can be used for deploying controller to same cluster/rp
+nsx_t_controller_host_prefix: nsx-t-ctl          # Without spaces, Generated controller would                                                                                           be nsx-t-ctrl-1.corp.local.io,...
 nsx_t_controller_vm_name_prefix: 'vlab-nsx-ctrl' # Generated edge host name would be                                                                                           "NSX-T Controller-1"
 nsx_t_controller_ips: 192.168.64.21,192.168.64.22,192.168.64.23 # Should be 1 or 3 i                                                                                          ps to maintain quorum for Controller Cluster
-nsx_t_controller_root_pwd: VMware1!       # Min 8 chars, upper, lower, number, special                                                                                           digit
-nsx_t_controller_cluster_pwd: VMware1!    # Min 8 chars, upper, lower, number, special                                                                                           digit
-nsx_t_edge_host_prefix: nsx-t-edge        # Without spaces, generated edge would be nsx                                                                                          -t-edge-1.corp.local.io,...
-nsx_t_edge_vm_name_prefix: 'vlab-nsx-edge'   # Generated edge host name would be "NSX-T Ed                                                                                          ge-1"
-nsx_t_edge_ips: 192.168.64.24,192.168.64.25   # comma separated ips, requires min 2 f                                                                                          or HA
+nsx_t_controller_root_pwd: VMware1!              # Min 8 chars, upper, lower, number, special                                                                                           digit
+nsx_t_controller_cluster_pwd: VMware1!           # Min 8 chars, upper, lower, number, special                                                                                           digit
+
+# Edit fololowing parameters
+nsx_t_edge_host_prefix: nsx-t-edge               # Without spaces, generated edge would be nsx                                                                                          -t-edge-1.corp.local.io,...
+nsx_t_edge_vm_name_prefix: 'vlab-nsx-edge'       # Generated edge host name would be "NSX-T Ed                                                                                          ge-1"
+nsx_t_edge_ips: 192.168.64.24,192.168.64.25      # comma separated ips, requires min 2 f                                                                                          or HA
 nsx_t_edge_root_pwd: VMware1!
-nsx_t_edge_portgroup_ext: nsx-uplink        # For external routing
-nsx_t_edge_portgroup_transport: nsx-transport  # For TEP/overlay
+nsx_t_edge_portgroup_ext: nsx-uplink             # For external routing
+nsx_t_edge_portgroup_transport: nsx-transport    # For TEP/overlay
 
 # If ova deployment succeeded but controller membership failed or edges didnt get to jo                                                                                          in for any reason
 # enable rerun of the configure controllers
@@ -140,7 +138,7 @@ nsx_t_tep_pool_nameserver: 192.168.64.60
 # leading to memory constraints
 # if nsx_t_keep_reservation to true  - would keep reservation ON, recommended for produ                                                                                          ction setups.
 # if nsx_t_keep_reservation to false - would turn reservation OFF, recommended for POCs                                                                                          , smaller setups.
-nsx_t_keep_reservation: true # for Prod setup
+nsx_t_keep_reservation: false # for Prod setup
 
 # Default Sizing of NSX-T VMs
 # Manager Sizing
