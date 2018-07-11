@@ -48,29 +48,26 @@ esxi_hosts_config:
 #   ip: 10.13.12.11
 #   root_pwd: rootPasswd
 
-compute_vcenter_configs: |
-  compute_vcenters: 
-  - compute_cluster_name: vlab-cna
+compute_manager_configs: |
+  compute_managers:
+  - vcenter_name: vlab-vcsa
     vcenter_host: vlab-vcsa.vballin.com
     vcenter_usr: administrator@vsphere.local
     vcenter_pwd: VMware1!
-    vcenter_cluster: vlab-cna
-    overlay_profile_mtu: 1600 # Min 1600
-    overlay_profile_vlan: 70 # VLAN ID for the TEP/Overlay network
-    # Specify an unused vmnic on esxi host to be used for nsx-t
-    # can be multiple vmnics separated by comma
-    esxi_vmnics: vmnic1 # vmnic1,vmnic2...
-
-  - compute_cluster_name: vlab-cna
-    vcenter_host: vlab-vcsa.vballin.com
-    vcenter_usr: administrator@vsphere.local
-    vcenter_pwd: VMware1!
-    vcenter_cluster: vlab-mgmt
-    overlay_profile_mtu: 1600 # Min 1600
-    overlay_profile_vlan: 70 # VLAN ID for the TEP/Overlay network
-    # Specify an unused vmnic on esxi host to be used for nsx-t
-    # can be multiple vmnics separated by comma
-    esxi_vmnics: vmnic1 # vmnic1,vmnic2...
+    clusters:
+    # Multiple clusters under same vcenter can be specified
+    - vcenter_cluster: vlab-cna
+      overlay_profile_mtu: 1600     # Min 1600
+      overlay_profile_vlan: 70      # EDIT VLAN ID for the TEP/Overlay network
+      # Specify an unused vmnic on esxi host to be used for nsx-t
+      # can be multiple vmnics separated by comma
+      uplink_vmnics: vmnic1         # vmnic1,vmnic2...
+    - vcenter_cluster: vlab-mgmt
+      overlay_profile_mtu: 1600     # Min 1600
+      overlay_profile_vlan: 70      # EDIT VLAN ID for the TEP/Overlay network
+      # Specify an unused vmnic on esxi host to be used for nsx-t
+      # can be multiple vmnics separated by comma
+      uplink_vmnics: vmnic1         # vmnic1,vmnic2...
 
 compute_vcenter_cluster:
 compute_vcenter_host:
