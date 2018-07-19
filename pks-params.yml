@@ -1,15 +1,15 @@
 # Pipeline resource configuration
-pivnet_token: tVBsH66rUWRLnRTAwqnK    # Pivnet token for downloading resources from Pivnet. Find this token at https://network.pivotal.io/users/dashboard/edit-profile
-opsman_major_minor_version: ^2\.1.*$   # PCF Ops Manager minor version to track
+pivnet_token: tVBsH66rUWRLnRTAwqnK      # Pivnet token for downloading resources from Pivnet. Find this token at https://network.pivotal.io/users/dashboard/edit-profile
+opsman_major_minor_version: ^2\.1.*$    # PCF Ops Manager minor version to track
 pks_major_minor_version: ^1\.1.*$       # Use this once PKS v1.1 becomes GA
 
 # vCenter configuration
-vcenter_host: vlab-vcsa.vballin.com            # vCenter host or IP
-vcenter_usr: administrator@vsphere.local             # vCenter username. If user is tied to a domain, then escape the \, example `domain\\user`
-vcenter_pwd: "VMware1!"          # vCenter password
+vcenter_host: vlab-vcsa.vballin.com       # vCenter host or IP
+vcenter_usr: administrator@vsphere.local  # vCenter username. If user is tied to a domain, then escape the \, example `domain\\user`
+vcenter_pwd: "VMware1!"                   # vCenter password
 vcenter_data_center: vlab-dc       # vCenter datacenter
-vcenter_insecure: 1        # vCenter skip TLS cert validation; enter `1` to disable cert verification, `0` to enable verification
-vcenter_ca_cert:           # vCenter CA cert at the API endpoint; enter a value if `vcenter_insecure: 0`
+vcenter_insecure: 1                # vCenter skip TLS cert validation; enter `1` to disable cert verification, `0` to enable verification
+vcenter_ca_cert:                   # vCenter CA cert at the API endpoint; enter a value if `vcenter_insecure: 0`
 
 # Ops Manager VM configuration
 om_vm_host: 172.31.0.2                          # Optional - vCenter host to deploy Ops Manager in
