@@ -1,6 +1,6 @@
 # Pipeline resource configuration
 pivnet_token: tVBsH66rUWRLnRTAwqnK      # Pivnet token for downloading resources from Pivnet. Find this token at https://network.pivotal.io/users/dashboard/edit-profile
-opsman_major_minor_version: ^2\.1.*$    # PCF Ops Manager minor version to track
+opsman_major_minor_version: ^2\.2.*$    # PCF Ops Manager minor version to track
 pks_major_minor_version: ^1\.1.*$       # Use this once PKS v1.1 becomes GA
 
 # vCenter configuration
@@ -189,11 +189,11 @@ pks_tile_ldap_first_name_attribute:
 pks_tile_ldap_last_name_attribute:
 
 # PKS Wavefront integration
-pks_tile_wavefront_api_url: # "https://try.wavefront.com/api/" # wavefront api url, empty is disabled
-pks_tile_wavefront_token: # b0aae650-e2b6-4fef-b18c-60d01c4e59d8  # wavefront access token
+pks_tile_wavefront_api_url: "https://try.wavefront.com/api/" # wavefront api url, empty is disabled
+pks_tile_wavefront_token: b0aae650-e2b6-4fef-b18c-60d01c4e59d8  # wavefront access token
 pks_tile_wavefront_alert_targets:  # email ids to sent alerts
 
-pks_tile_telemetry: disabled # can be enabled or disabled
+pks_tile_telemetry: enabled # can be enabled or disabled
 
 pks_tile_plan_details:
 - plan_detail:
@@ -238,7 +238,13 @@ pks_tile_plan_details:
     master_instances: 1    # The number of K8s worker instances
     worker_instances: 5    # The number of K8s worker instances
     errand_vm_type: micro
-    addons_spec: "" # Kubernetes yml that contains specifications of addons to run on every cluster. This is an experimental feature. Please consider carefully before applying this to your plan
+    addons_spec: # "kind: StorageClass
+    #apiVersion: storage.k8s.io/v1
+    #metadata:
+    #name: thin
+    #annotations:
+    #storageclass.kubernetes.io/is-default-class: "true""
+ # Kubernetes yml that contains specifications of addons to run on every cluster. This is an experimental feature. Please consider carefully before applying this to your plan
     allow_privileged_containers: true  # Privileged containers run with host-like permissions. Allowing your users to deploy privileged containers in clusters using this plan can create security vulnerabilities and may impact other tiles. Use with caution."
     # The admission controller will deny exec and attach commands to pods that run with escalated privileges that allow host access.
     # If checked, the admission controller will be disabled.
