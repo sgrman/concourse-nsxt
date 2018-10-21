@@ -34,8 +34,8 @@ resource_reservation_off: true
 
 # Compute manager credentials should be the same as above vCenter's if
 # controllers and edges are to be on the same vCenter
-#compute_manager_username: "Administrator@vsphere.local"
-#compute_manager_password: "VMware1!"
+compute_manager_username: "Administrator@vsphere.local"
+compute_manager_password: "flhrRed04!!"
 # compute manager for the compute cluster (2nd vCenter)
 compute_manager_2_vcenter_ip: "192.168.1.251"
 compute_manager_2_username: "administrator@vsphere.local"
@@ -52,24 +52,24 @@ vtep_ip_pool_end: 192.168.1.99
 
 # Tier 0 router
 tier0_router_name: t0-pks
-tier0_uplink_port_ip: 192.168.71.8
+tier0_uplink_port_ip: 192.168.1.81
 tier0_uplink_port_subnet: 24
-tier0_uplink_next_hop_ip: 192.168.71.1
-tier0_uplink_port_ip_2: 192.168.71.9
-tier0_ha_vip: 192.168.71.10
+tier0_uplink_next_hop_ip: 192.168.1.1
+tier0_uplink_port_ip_2: 192.168.1.82
+tier0_ha_vip: 192.168.1.80
 
 ## Controllers
-controller_ips: 192.168.64.21 #comma separated based on number of required controllers
-controller_default_gateway: 192.168.64.1
+controller_ips: 192.168.1.6 #comma separated based on number of required controllers
+controller_default_gateway: 192.168.1.1
 controller_ip_prefix_length: 24
-controller_hostname_prefix: vlab-ctrl # Generated hostname: controller_1.corp.local.io
+controller_hostname_prefix: nsx-ctl01 # Generated hostname: controller_1.corp.local.io
 controller_cli_password: "VMware1!" # Min 8 chars, upper, lower, num, special char
 controller_root_password: "VMware1!"
 controller_deployment_size: "SMALL"
-vc_datacenter_for_controller: vlab-dc
-vc_cluster_for_controller: vlab-mgmt
-vc_datastore_for_controller: vlab-nfs-ds-ssd
-vc_management_network_for_controller: "vlab-mgmt"
+vc_datacenter_for_controller: FLHRNET
+vc_cluster_for_controller: COMPUTE
+vc_datastore_for_controller: vsanDatastore
+vc_management_network_for_controller: "vxw-dvs-20-virtualwire-2-sid-5000-vPOD01_NSX-T"
 controller_shared_secret: "VMware1!VMware1!"
 
 ## Edge nodes
