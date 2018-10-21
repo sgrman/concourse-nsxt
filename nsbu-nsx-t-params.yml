@@ -73,30 +73,30 @@ vc_management_network_for_controller: "vxw-dvs-20-virtualwire-2-sid-5000-vPOD01_
 controller_shared_secret: "VMware1!VMware1!"
 
 ## Edge nodes
-edge_ips: 192.168.64.24,192.168.64.25    #comma separated based in number of required edges
-edge_default_gateway: 192.168.64.1
+edge_ips: 192.168.1.51,192.168.1.61    #comma separated based in number of required edges
+edge_default_gateway: 192.168.1.1
 edge_ip_prefix_length: 24
-edge_hostname_prefix: vlab-edge
+edge_hostname_prefix: esx05, esx06
 edge_transport_node_prefix: edge-tn
 edge_cli_password: "VMware1!"
 edge_root_password: "VMware1!"
 edge_deployment_size: "medium" #Large recommended for PKS deployments
-vc_datacenter_for_edge: vlab-dc
-vc_cluster_for_edge: vlab-mgmt
-vc_datastore_for_edge: vlab-nfs-ds-ssd
+vc_datacenter_for_edge: FLHRNET
+vc_cluster_for_edge: COMPUTE
+vc_datastore_for_edge: vsanDatastore
 vc_uplink_network_for_edge: "nsx-uplink"
 vc_overlay_network_for_edge: "nsx-transport"
-vc_management_network_for_edge: "vlab-mgmt"
+vc_management_network_for_edge: "vxw-dvs-20-virtualwire-2-sid-5000-vPOD01_NSX-T"
 
 ## ESX hosts
 #Intsll vSphere clusters automatically
-clusters_to_install_nsx: vlab-mgmt,vlab-cna    #Comma seprated
-per_cluster_vlans: 70,70  #Comma seprated, order of VLANs applied same as order of clusters
+#clusters_to_install_nsx: vlab-mgmt,vlab-cna    #Comma seprated
+#per_cluster_vlans: 70,70  #Comma seprated, order of VLANs applied same as order of clusters
 
-esx_ips: "" # additional esx hosts, if any, to be individually installed
-esx_os_version: "6.5.0"
-esx_root_password: "VMware1!"
-esx_hostname_prefix: "vlab-esx"
+esx_ips: "192.168.1.11, 192.168.1.21, 192.168.1.31, 192.168.1.41" # additional esx hosts, if any, to be individually installed
+esx_os_version: "6.7.0"
+esx_root_password: "flhr04!!"
+esx_hostname_prefix: "esx01"
 
 esx_available_vmnic: "vmnic1" # comma separated physical NICs, applies to both cluster installation or ESXi installation
 
