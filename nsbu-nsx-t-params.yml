@@ -1,54 +1,54 @@
 enable_ansible_debug: false # set value to true for verbose output from ansible
 
-nsx_t_pipeline_branch: master
+nsx_t_pipeline_branch: flhrlab
 
 # format: "http://172.18.0.2"
-nsx_image_webserver: "http://172.18.0.2"
+nsx_image_webserver: "10.0.1.226/Images"
 ova_file_name: "nsx-unified-appliance-2.3.0.0.0.10085405.ova" #Uncomment this if downloaded file manually and placed under /home/concourse
-ovftool_file_name: "VMware-ovftool-4.3.0-7948156-lin.x86_64.bundle"   #Uncomment this if downloaded file manually and placed under /home/concourse
+ovftool_file_name: "VMware-ovftool-4.3.0-10104578-lin.x86_64.bundle"   #Uncomment this if downloaded file manually and placed under /home/concourse
 
 # vCenter details to deploy the Mgmt OVAs (Mgr, Edge, Controller)
-vcenter_ip: 192.168.64.10
+vcenter_ip: 10.0.1.251                        # My Lab's Management vCenter
 vcenter_username: administrator@vsphere.local  # EDIT - this is for deployment of the ovas for the mgmt plane
-vcenter_password: VMware1!                     # EDIT - this is for deployment of the ovas for themgmt plane
-vcenter_datacenter: vlab-dc               # EDIT
-vcenter_datastore: vlab-nfs-ds-ssd        # EDIT
-vcenter_cluster: vlab-mgmt                # EDIT
+vcenter_password: flhrRed04!!                   # EDIT - this is for deployment of the ovas forthe mgmt plane
+vcenter_datacenter: FLHRNET               # EDIT
+vcenter_datastore: vsanDatastore        # EDIT
+vcenter_cluster: COMPUTE01                # EDIT
 
 # NSX Manager general network settings
 ntp_servers: us.pool.ntp.org              # EDIT
-mgmt_portgroup: 'vlab-mgmt'              # EDIT
-dns_server: 192.168.64.60                 # EDIT
-dns_domain: vballin.com                   # EDIT
-default_gateway: 192.168.64.1             # EDIT
+mgmt_portgroup: 'vxw-dvs-20-virtualwire-2-sid-5000-vPOD01_NSX-T'              # EDIT
+dns_server: 192.168.1.100, 8.8.8.8                 # EDIT
+dns_domain: vpod01.local                   # EDIT
+default_gateway: 192.168.1.1             # EDIT
 netmask: 255.255.255.0                   # EDIT
 
-nsx_manager_ip: 192.168.64.20
+nsx_manager_ip: 192.168.1.5
 nsx_manager_username: admin
-nsx_manager_password: VMware1!
-nsx_manager_assigned_hostname: "vlab-nsxmgr" # this hostname+dns_domain will be FQDN
-nsx_manager_root_pwd: VMware1!    # Min 8 chars, upper, lower, number, special digit
+nsx_manager_password: vpod01Vmware1!
+nsx_manager_assigned_hostname: "nsx01" # this hostname+dns_domain will be FQDN
+nsx_manager_root_pwd: vpodVmware1!    # Min 8 chars, upper, lower, number, special digit
 nsx_manager_deployment_size: small   # Recommended for real barebones demo, smallest setup
 nsx_manager_ssh_enabled: true
 resource_reservation_off: true
 
 # Compute manager credentials should be the same as above vCenter's if
 # controllers and edges are to be on the same vCenter
-compute_manager_username: "Administrator@vsphere.local"
-compute_manager_password: "VMware1!"
+#compute_manager_username: "Administrator@vsphere.local"
+#compute_manager_password: "VMware1!"
 # compute manager for the compute cluster (2nd vCenter)
-compute_manager_2_vcenter_ip: "null"
-compute_manager_2_username: "null"
-compute_manager_2_password: "null"
+compute_manager_2_vcenter_ip: "192.168.1.251"
+compute_manager_2_username: "administrator@vsphere.local"
+compute_manager_2_password: "vpod01Flhr04!!"
 
-edge_uplink_profile_vlan: 70 # For outbound uplink connection used by Edge, usually keep as 0
-esxi_uplink_profile_vlan: 70 # For internal overlay connection used by Esxi hosts, usually trasnport VLAN ID
+edge_uplink_profile_vlan:  # For outbound uplink connection used by Edge, usually keep as 0
+esxi_uplink_profile_vlan:  # For internal overlay connection used by Esxi hosts, usually trasnport VLAN ID
 
 # Virtual Tunnel Endpoint network ip pool
-vtep_ip_pool_cidr: 192.168.70.0/24
-vtep_ip_pool_gateway: 192.168.70.1
-vtep_ip_pool_start: 192.168.70.10
-vtep_ip_pool_end: 192.168.70.200
+vtep_ip_pool_cidr: 192.168.1.0/24
+vtep_ip_pool_gateway: 192.168.1.1
+vtep_ip_pool_start: 192.168.1.90
+vtep_ip_pool_end: 192.168.1.99
 
 # Tier 0 router
 tier0_router_name: t0-pks
